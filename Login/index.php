@@ -4,3 +4,4 @@ if(session_id()==''){
     session_start();
     session_destroy();
 }
+$_SESSION["UserId"] = 1;
