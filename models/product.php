@@ -142,8 +142,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getName());
 		$Insert->Attach($Info->getPrice());
 		$Insert->Attach($Info->getImagePath());
-		date_default_timezone_set("Egypt/Cairo");
 		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -183,7 +183,6 @@ private function __construct() { }
 			unlink($OldData->getImagePath());
 			$Info->setImagePath($TargetFile);
 		}
-		date_default_timezone_set("Egypt/Cairo");
 		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("Product");
 		$Table->Update($Condition, $Set);

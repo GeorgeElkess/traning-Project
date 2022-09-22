@@ -78,8 +78,8 @@ private function __construct() { }
 		$Table = new TableManger("ProductCategory");
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getName());
-		date_default_timezone_set("Egypt/Cairo");
 		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -96,8 +96,6 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
-		date_default_timezone_set("Egypt/Cairo");
-		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("ProductCategory");
 		$Table->Update($Condition, $Set);
 		return true;

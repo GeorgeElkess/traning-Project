@@ -101,8 +101,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getProductId());
 		$Insert->Attach($Info->getCurrentPrice());
 		$Insert->Attach($Info->getNumber());
-		date_default_timezone_set("Egypt/Cairo");
 		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}

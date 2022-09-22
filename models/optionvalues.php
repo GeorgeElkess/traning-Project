@@ -90,8 +90,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getPCOId());
 		$Insert->Attach($Info->getProductId());
 		$Insert->Attach($Info->getValues());
-		date_default_timezone_set("Egypt/Cairo");
 		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -114,7 +114,6 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
-		date_default_timezone_set("Egypt/Cairo");
 		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("OptionValues");
 		$Table->Update($Condition, $Set);

@@ -133,8 +133,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getDateOfBirth());
 		$Insert->Attach($Info->getPhone());
 		$Insert->Attach($Info->getAddress());
-		date_default_timezone_set("Egypt/Cairo");
 		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -164,7 +164,6 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
-		date_default_timezone_set("Egypt/Cairo");
 		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("User");
 		$Table->Update($Condition, $Set);
