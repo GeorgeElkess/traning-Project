@@ -24,10 +24,26 @@ class Options
 	function setType($Type) {
 		$this->Type = $Type;
 	}
-	public function __construct($Id=null,$Name=null,$Type=null) {
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt){
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt) {
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt(){
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt(){
+		return $this->UpdatedAt;
+	}
+	public function __construct($Id=null,$Name=null,$Type=null,$CreatedAt=null,$UpdatedAt=null) {
 		if($Id!=null) $this->setId($Id);
 		if($Name!=null) $this->setName($Name);
 		if($Type!=null) $this->setType($Type);
+		if($CreatedAt!=null) $this->setCreatedAt($CreatedAt);
+		if($UpdatedAt!=null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(Options $var) {
 		if($this->Name!=$var->getName()) return false;
@@ -56,6 +72,8 @@ private function __construct() { }
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getName());
 		$Insert->Attach($Info->getType());
+		date_default_timezone_set("Egypt/Cairo");
+		$Insert->Attach(date("y-m-d"));
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -74,6 +92,8 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		date_default_timezone_set("Egypt/Cairo");
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("Options");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -90,7 +110,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new Options($Row["Id"], $Row["Name"], $Row["Type"]));
+			array_push($Result, new Options($Row["Id"], $Row["Name"], $Row["Type"],$Row["CreatedAt"],$Row["UpdatedAt"]));
 		}
 		return $Result;
 	}

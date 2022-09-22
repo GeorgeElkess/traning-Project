@@ -17,9 +17,11 @@ class UserType
 	function setName($Name) {
 		$this->Name = $Name;
 	}
-	public function __construct($Id=null,$Name=null) {
+	public function __construct($Id=null,$Name=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($Name!=null) $this->setName($Name);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(UserType $var) {
 		if($this->Name!=$var->getName()) return false;
@@ -28,6 +30,24 @@ class UserType
 	public function AllIsSet() {
 		if($this->Name == "") return false;
 		return true;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class UserTypeManger {
@@ -45,6 +65,8 @@ private function __construct() { }
 		$Table = new TableManger("UserType");
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getName());
+		date_default_timezone_set("Egypt/Cairo");
+		$Insert->Attach(date("y-m-d"));
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -61,6 +83,8 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		date_default_timezone_set("Egypt/Cairo");
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("UserType");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -76,7 +100,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new UserType($Row["Id"], $Row["Name"]));
+			array_push($Result, new UserType($Row["Id"], $Row["Name"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}
