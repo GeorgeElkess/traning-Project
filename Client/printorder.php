@@ -1,6 +1,6 @@
 <?php 
 include_once "../includes.php";
-   $Id=Encryption::Decrypt($_GET["Id"]);
+    $Id = Encryption::Decrypt($_GET["Id"]);
    $obj=new connection();
    $obj->return_special_colom("orders",$Id,"UserId","Id");
    if(count($obj->arry_object)==0)
@@ -11,6 +11,10 @@ include_once "../includes.php";
     exit;
 
    }
+
+//    get adderrs
+ $obj8=new connection();
+ $obj8->return_special_colom("user",$obj->arry_object[0],"Address","Id");
    if(count($obj->arry_object)>0)
    {
     // user name
@@ -51,6 +55,7 @@ include_once "../includes.php";
     
    
     echo  '<div id="a">'."  All orders for".$obj2->arry_object[0].'</div>'."<br>";
+    echo  '<div id="a">'. "  the Address is :".$obj8->arry_object[0].'</div>'."<br>";
     echo  '<div id="a">'. "  the date is :".$obj3->arry_object[0].'</div>'."<br>";
 
    ?>
