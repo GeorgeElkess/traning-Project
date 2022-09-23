@@ -69,6 +69,7 @@ include_once "../includes.php";
        <th> product name</th>
        <th> price</th>
        <th> Amount</th>
+       <th> Total</th>
 
      </tr>
    
@@ -79,8 +80,8 @@ include_once "../includes.php";
     //  echo count($obj7->arry_object)."<br>";
      for ($i = 0; $i<count($obj5->arry_object); $i++) 
      {
-      
-       echo "<tr>"."<td>".$obj5->arry_object[$i]."</td>"."<td>".$obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>" . "</tr>" . "</td>";
+        $total_row= $obj7->arry_object[$i]*$obj6->arry_object[$i];
+       echo "<tr>"."<td>".$obj5->arry_object[$i]."</td>"."<td>".$obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>". "<td>" .$total_row. "</td>" . "</tr>" . "</td>";
      }
      $total_price=0;
      for ($i = 0; $i < count($obj6->arry_object); $i++) 
