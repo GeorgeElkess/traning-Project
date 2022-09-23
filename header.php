@@ -1,3 +1,8 @@
+<?php
+ if (session_id() == '') {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,9 +39,9 @@
 
 <body class="main-layout inner_posituong">
     <!-- loader  -->
-    <div class="loader_bg">
+    <!-- <div class="loader_bg">
         <div class="loader"><img src="/GitHub/traning-Project/images/loading.gif" alt="#" /></div>
-    </div>
+    </div> -->
     <!-- end loader -->
     <!-- header -->
     <header>
@@ -62,9 +67,7 @@
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item d_none">
                                         <?php
-                                        if (session_id() == '') {
-                                            session_start();
-                                        }
+                                       
                                         if (isset($_SESSION["UserId"])) { ?>
                                             <a class="nav-link" href="/GitHub/traning-Project/Login/Logout.php">Logout</a>
                                         <?php } else { ?>

@@ -34,6 +34,23 @@ class connection extends PDO
         // return  $result;
         // }
     }
+
+    public function get_min($table_name,$colom_name)
+    {
+      $sql ="SELECT MIN($colom_name) AS max_page FROM $table_name";
+      $result=$this->con->query($sql);
+      $row= $result -> fetch_assoc();
+      return $row["max_page"];
+    }
+
+    public function max($table_name,$colom_name)
+    {
+      $sql ="SELECT MAX($colom_name) AS max_page FROM $table_name";
+      $result=$this->con->query($sql);
+      $row= $result -> fetch_assoc();
+      return $row["max_page"];
+    }
+
     public function returncolom($table_name,$colom_name,$orderby)
     {
         $sql="SELECT {$colom_name} FROM  $table_name ORDER BY {$orderby}  ASC";
@@ -91,6 +108,19 @@ class connection extends PDO
         $this->i++;
       }     
     }
+
+    public function betwen_to_values($table_name,$vale,$colom_name,$search_colom,$search_colom2,$vale2)
+    {
+      $sql="SELECT {$colom_name}  FROM {$table_name} WHERE {$search_colom}>'$vale' AND {$search_colom2}<='$vale2'";
+     // echo $sql."<br>";
+      $result=$this->con->query($sql);
+      while($row= $result -> fetch_assoc())
+      { 
+        $this->arry_object[$this->i]=$row[$colom_name];
+        //echo $row[$colom_name]."<hr>";
+        $this->i++;
+      }     
+    }
     //-----------------login--------------------------------
    
     public function login($id,$password)
@@ -108,14 +138,14 @@ class connection extends PDO
     public function insert($table_name,$data)
     {
         $sql="insert into {$table_name} values {$data}";
-         echo $sql;
+        //  echo $sql;
         $result=$this->con->query($sql);
     }
     //--------------updata---------------------------
     public function updata($table_name,$new_vale,$colom_set,$colom_name,$vale)
     {
          $sql="UPDATE $table_name SET $colom_set= '$new_vale' WHERE $colom_name = '$vale'";
-         //echo $sql;
+        //  echo $sql;
          $result=$this->con->query($sql);
     }
     public function updata_2_con($table_name,$new_vale,$colom_set,$colom_name,$vale,$search_colom2,$vale2)

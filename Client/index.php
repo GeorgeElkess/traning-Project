@@ -16,10 +16,12 @@
             </div>
          </div>
   <!-- her will make the filter -->
+       
         filter by:
         <select id="selectBox" onchange="filter_product(value)">
         <optgroup label="products">
         <option value="" disabled selected>Select your product</option>
+        <option value="all" >Select All product</option>
          <?php
            $AllData = ProductCategoryManger::GetAll();
            if($AllData!=false)
@@ -32,6 +34,10 @@
          ?>
           </optgroup>
         </select>
+
+         
+
+
 
          <div class="row">
             <div class="col-md-12">
@@ -74,8 +80,10 @@
 
     if(isset($_GET["delete_id"]))
     {
+      
       Add_to_card::remove_product($_GET["delete_id"]);
-
+      
+     
       ?>
        <!-- here will make the cart  -->
  <?php
@@ -104,15 +112,17 @@
 
          $obj4=new connection();
          $obj4->return_special_colom("product",$obj->arry_object[$i],"Price","Id");
-         echo '<li><a href="">'.$obj2->arry_object[0]."  x".$obj3->arry_object[$i].'</a>'.'<button class="button-5"  onclick="delete_product('.$obj->arry_object[$i].')" role="button">x</button>'.'</li>'.'<br>';
+         echo '<li><a href="">'.$obj2->arry_object[0]."  x".$obj3->arry_object[$i].'</a>'.'<button class="button-5"  onclick="delete_product('.$obj->arry_object[$i].')" role="button">x</button>'.'<button class="button-5"  onclick="delete_product('.$obj->arry_object[$i].')" role="button">-</button>'.'</li>'.'<br>';
+         echo "<hr>";
          $total_payed+=$obj4->arry_object[0]*$obj3->arry_object[$i];
          
       }
       echo "<hr>";
       echo 'total payed: '.$total_payed.' $'.'<br>';
+      echo '<li><a href="order.php?total_payed='.Encryption::Encrypt($total_payed).'">'.'<button class="button-5">'.'BUY Now'.'</button>'.'</a>'.'</li>'.'<br>';
    ?>
    <hr>
-   <button class="button-6" role="button">Buy now</button>
+   
   </ul>
 </div>
     <?php
@@ -122,8 +132,107 @@
       echo "nooo";
     }
     ?>
+    
+      <?php
+      
+      return;
+    }
+
+    if(isset($_GET["product_price"]))
+    {
+      ?>
+
+    <div  id="product_id" class="products">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage">
+                  <h2>Our Products</h2>
+               </div>
+            </div>
+         </div>
+  <!-- her will make the filter -->
+       
+        filter by:
+        <select id="selectBox" onchange="filter_product(value)">
+        <optgroup label="products">
+        <option value="" disabled selected>Select your product</option>
+        <option value="all" >Select All product</option>
+         <?php
+           $AllData = ProductCategoryManger::GetAll();
+           if($AllData!=false)
+           {
+            foreach ($AllData as $Data) 
+            {
+                  echo '<option value='.$Data->getId().'>'.$Data->getName().'</option>';
+            }
+          }
+         ?>
+          </optgroup>
+        </select>
+
+        <!-- her will make the filter rang of price  -->
+        filter by price :
+         <?php
+         if(isset($obj)){}
+         else
+         {
+           $obj=new connection();
+         }
+          $min_price=$obj->get_min("product","price");
+          $max_price=$obj->max("product","price");
+
+         ?>
+        <input type="range" id="rs" min="0" max="<?php echo $max_price; ?>"  onclick="filter_product2(value)" oninput="rangevalue.value=value"/>
+        <output id="rangevalue"> <script>document.getElementById("rs").value</script>$</output>
+           
+
+
+         <div class="row">
+            <div class="col-md-12">
+               <div class="our_products">
+                  <div class="row">
+                     <?php
+                            
+                        $obj=new connection();
+                        $obj2=new connection();
+                        $obj3=new connection();
+                        $obj4=new connection();
+                        $min_price=$obj4->get_min("product","price");
+                        $obj->betwen_to_values("product",$min_price,"ImagePath","price","price",$_GET["product_price"]);
+                        $obj3->betwen_to_values("product",$min_price,"Id","price","price",$_GET["product_price"]);
+                        $obj2->betwen_to_values("product",$min_price,"Name","price","price",$_GET["product_price"]);
+                        for($i=0;$i<count($obj->arry_object);$i++)
+                        {
+                           ?>
+                             
+                             <div  class="col-md-4 margin_bottom1">
+                              <div   class="product_box">
+                                 <a href="show_product_details.php?id_product=<?php echo $obj3->arry_object[$i];?>">
+                                 <figure><img src="<?php echo $obj->arry_object[$i];?>" alt="#" /></figure>
+                                 <h3><?php echo $obj2->arry_object[$i];?></h3>
+                                 </a>
+                              </div>
+                           </div>
+                           
+                           <?php
+                        }
+                        if(count($obj->arry_object)==0)
+                        {
+                           echo"No item with this price".$_GET["product_price"]."<hr>";
+                        }
+                     ?>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
       <?php
       return;
+
+
+    
     }
   
 //<!-- -------------------------------------------------------------------- -->
@@ -144,6 +253,21 @@
      //session_start();
     if(isset($_REQUEST["card"]))
     {
+      if(isset($_REQUEST["delete_one_product"]))
+      {
+           $obj=new connection();
+           $obj->return_special_colom("card",$_REQUEST["delete_one_product"],"count","product_id");
+           if($obj->arry_object[0]>1)
+           {
+           $new_value=$obj->arry_object[0]-1;
+             echo  $new_value;
+           $obj->updata("card",$new_value,"count","product_id",$_REQUEST["delete_one_product"]);
+           }
+          
+           return;
+           
+           
+      }
      
     ?>
 <div id="menu">
@@ -163,18 +287,20 @@
        {
          $obj2=new connection();
          $obj2->return_special_colom("product",$obj->arry_object[$i],"Name","Id");
-
+         
          $obj4=new connection();
          $obj4->return_special_colom("product",$obj->arry_object[$i],"Price","Id");
-         echo '<li><a href="">'.$obj2->arry_object[0]."  x".$obj3->arry_object[$i].'</a>'.'<button class="button-5"  onclick="delete_product('.$obj->arry_object[$i].')" role="button">x</button>'.'</li>'.'<br>';
+         echo '<li><a href="">'.$obj2->arry_object[0]."  x".$obj3->arry_object[$i].'</a>'.'<button class="button-5"  onclick="delete_product('.$obj->arry_object[$i].')" role="button">x</button>'.'<button class="button-6"  onclick="delete_one_product('.$obj->arry_object[$i].')" role="button">-</button>'.'</li>'.'<br>';
+         echo "<hr>";
          $total_payed+=$obj4->arry_object[0]*$obj3->arry_object[$i];
          
       }
       echo "<hr>";
-      echo 'total payed: '.$total_payed.' $'.'<br>';
+      echo 'total payed: '.$total_payed.' $'.'<br>'."<hr>";
+
+      echo '<li><a href="order.php?total_payed='.Encryption::Encrypt($total_payed).'">'.'<button class="button-5">'.'BUY Now'.'</button>'.'</a>'.'</li>'.'<br>';
    ?>
    <hr>
-   <button class="button-6" role="button">Buy now</button>
   </ul>
 </div>
     <?php
@@ -198,10 +324,12 @@
             </div>
          </div>
   <!-- her will make the filter -->
+    <span>
         filter by:
         <select id="selectBox" onchange="filter_product(value)">
         <optgroup label="products">
         <option value="" disabled selected>Select your product</option>
+        <option value="all" >Select All product</option>
          <?php
            $AllData = ProductCategoryManger::GetAll();
            if($AllData!=false)
@@ -214,6 +342,19 @@
          ?>
           </optgroup>
         </select>
+         <!-- her will make the filter rang of price  -->
+         filter by price :
+         <?php
+           $obj=new connection();
+          $min_price=$obj->get_min("product","price");
+          $max_price=$obj->max("product","price");
+
+         ?>
+        <input type="range" value="70" min="<?php echo $min_price; ?>" max="<?php echo $max_price; ?>"  onclick="filter_product2(value)" oninput="rangevalue.value=value"/>
+        <output id="rangevalue"><?php echo $min_price; ?>$</output>
+         
+
+
 
          <div class="row">
             <div class="col-md-12">
@@ -266,6 +407,11 @@ function filter_product(product_id)
     
    // alert(product_id);
    // return;
+    if(product_id=="all")
+    {
+      location.reload();
+      return;
+    }
    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function()
     {
@@ -279,12 +425,33 @@ function filter_product(product_id)
   xhttp.open("GET","index.php?product_id="+product_id, true);
   xhttp.send();
 }
+function filter_product2(product_id)
+{
+    
+   // alert(product_id);
+   //  return;
+   var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function()
+    {
+    if (this.readyState == 4 && this.status == 200) 
+    {
+     
+      // document.getElementById("a").innerHTML=this.responseText;
+     document.getElementById("product_id").innerHTML=this.responseText;
+    }
+  };
+  xhttp.open("GET","index.php?product_price="+product_id, true);
+  xhttp.send();
+}
 
 
 function delete_product(product_id)
 {
-   // alert(product_id);
-   //  return;
+   //  alert(product_id);
+   //   return;
+
+   
+
    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function()
     {
@@ -298,6 +465,30 @@ function delete_product(product_id)
   xhttp.open("GET","index.php?delete_id="+product_id+"&card=1", true);
   xhttp.send();
 }
+function delete_one_product(product_id)
+{
+
+   // alert(product_id);
+   //  return;
+
+   var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function()
+    {
+    if (this.readyState == 4 && this.status == 200) 
+    {
+      location.reload();
+       // document.getElementById("menu").innerHTML=this.responseText;
+   //   document.getElementById("product_id").innerHTML=this.responseText;
+    }
+  };
+  xhttp.open("GET","index.php?delete_one_product="+product_id+"&card=1", true);
+  xhttp.send();
+}
+
+
+
+
+
    </script>
 
 
@@ -377,10 +568,10 @@ ul {
   background-clip: padding-box;
   background-color: #fa6400;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: .2rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
-  color: #fff;
+  color: 3EF128;
   cursor: pointer;
   display: inline-flex;
   font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;

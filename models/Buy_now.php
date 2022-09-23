@@ -4,7 +4,7 @@ include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/data_ba
 class Add_to_card
 {
     
-    static function Add_product($product_id,$count)
+    static function Add_product($id,$product_id,$count)
     {
 
         if($product_id!=null&&$count>0)
@@ -19,8 +19,8 @@ class Add_to_card
                 $obj->updata("card", $obj->arry_object[0],"count","product_id",$product_id);
                 return;
             }
-            $lastid=$obj->getlastitem("card","Id");
-            $data="($lastid,$product_id,$count)";
+            // $lastid=$obj->getlastitem("card","Id");
+            $data="($id,$product_id,$count)";
             $obj->insert("card",$data);
         }
     }
