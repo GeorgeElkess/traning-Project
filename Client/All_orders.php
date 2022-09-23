@@ -31,6 +31,22 @@ include_once "../includes.php";
 
    include_once "../header.php";
 ?>
+
+        filter by:
+        <select id="selectBox" onchange="filter_product(value)">
+        <optgroup label="products">
+        <option value="" disabled selected>Select your product</option>
+        <option value="all" >Select All product</option>
+         <?php
+              
+               
+           
+                  echo '<option value='.$Data->getId().'>'.$Data->getName().'</option>';
+            
+          
+         ?>
+          </optgroup>
+        </select>
 <table>
      <tr>
        <th>Order Id</th>
@@ -54,6 +70,7 @@ include_once "../includes.php";
      
      ?>
    </table>
+
     <?php
 
     
