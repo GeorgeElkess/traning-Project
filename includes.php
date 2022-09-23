@@ -9,3 +9,5 @@ include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/product
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/productcategoryoption.php";
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/user.php";
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/usertype.php";
+include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/data_base_ali.php";
+include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/Buy_now.php";
