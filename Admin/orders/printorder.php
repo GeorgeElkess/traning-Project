@@ -9,6 +9,10 @@ if (count($obj->arry_object) == 0) {
     include_once "../footer.php";
     exit;
 }
+
+//    get adderrs
+$obj8 = new connection();
+$obj8->return_special_colom("user", $obj->arry_object[0], "Address", "Id");
 if (count($obj->arry_object) > 0) {
     // user name
     $obj2 = new connection();
@@ -44,6 +48,7 @@ include_once "../header.php";
 
 
 echo  '<div id="a">' . "  All orders for" . $obj2->arry_object[0] . '</div>' . "<br>";
+echo  '<div id="a">' . "  the Address is :" . $obj8->arry_object[0] . '</div>' . "<br>";
 echo  '<div id="a">' . "  the date is :" . $obj3->arry_object[0] . '</div>' . "<br>";
 
 ?>
