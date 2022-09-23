@@ -1,9 +1,6 @@
 <?php 
 include_once "../includes.php";
-
-/// Order Id
-//    $Id=$_GET["Id"];
-   $Id=1;
+   $Id=Encryption::Decrypt($_GET["Id"]);
    $obj=new connection();
    $obj->return_special_colom("orders",$Id,"UserId","Id");
    if(count($obj->arry_object)==0)
@@ -11,7 +8,6 @@ include_once "../includes.php";
     include_once "../header.php";
     echo "NO Order with id: ".$Id;
     include_once "../footer.php";
-   
     exit;
 
    }
