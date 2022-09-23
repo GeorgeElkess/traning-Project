@@ -101,9 +101,10 @@ if (isset($_GET["Id"])) $Id = intval(Encryption::Decrypt($_GET["Id"]));
                             <th>Id</th>
                             <th>User</th>
                             <th>Date</th>
-                            <th>Details</th>
                             <th>Created At</th>
                             <th>Updated At</th>
+                            <th>Details</th>
+                            <th>Print</th>
                             <th>Update</th>
                             <th>Delete</th>
                         </tr>
@@ -120,7 +121,8 @@ if (isset($_GET["Id"])) $Id = intval(Encryption::Decrypt($_GET["Id"]));
                                 echo "<td>" . $Data->getDate() . "</td>";
                                 echo "<td>" . $Data->getCreatedAt() . "</td>";
                                 echo "<td>" . $Data->getUpdatedAt() . "</td>";
-                                echo "<td>" . "<a href='../orderdetails/index.php?Id=" . Encryption::Encrypt($Data->getId()) . "'>Details</a>" . "</td>";
+                                echo "<td>" . "<a href='../orderdetails/index.php?OrderId=" . Encryption::Encrypt($Data->getId()) . "'>Details</a>" . "</td>";
+                                echo "<td>" . "<a href/='printorder.php?Id=" . Encryption::Encrypt($Data->getId()) . "'>Details</a>" . "</td>";
                                 echo "<td>" . "<a href=update.php?Id=" . Encryption::Encrypt($Data->getId()) . ">Update</a>" . "</td>";
                                 echo "<td>" . "<a href=delete.php?Id=" . Encryption::Encrypt($Data->getId()) . ">Delete</a>" . "</td>";
                                 echo "</tr>";
