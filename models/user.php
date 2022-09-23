@@ -60,7 +60,7 @@ class User
 	function setAddress($Address) {
 		$this->Address = $Address;
 	}
-	public function __construct($Id=null,$TypeId=null,$UserName=null,$Password=null,$Email=null,$DateOfBirth=null,$Phone=null,$Address=null) {
+	public function __construct($Id=null,$TypeId=null,$UserName=null,$Password=null,$Email=null,$DateOfBirth=null,$Phone=null,$Address=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($TypeId!=null) $this->setTypeId($TypeId);
 		if($UserName!=null) $this->setUserName($UserName);
@@ -69,6 +69,8 @@ class User
 		if($DateOfBirth!=null) $this->setDateOfBirth($DateOfBirth);
 		if($Phone!=null) $this->setPhone($Phone);
 		if($Address!=null) $this->setAddress($Address);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(User $var) {
 		if($this->TypeId!=$var->getTypeId()) return false;
@@ -89,6 +91,24 @@ class User
 		if($this->Phone == "") return false;
 		if($this->Address == "") return false;
 		return true;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class UserManger {
@@ -113,6 +133,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getDateOfBirth());
 		$Insert->Attach($Info->getPhone());
 		$Insert->Attach($Info->getAddress());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -142,6 +164,7 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("User");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -163,7 +186,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new User($Row["Id"], $Row["TypeId"], $Row["UserName"], $Row["Password"], $Row["Email"], $Row["DateOfBirth"], $Row["Phone"], $Row["Address"]));
+			array_push($Result, new User($Row["Id"], $Row["TypeId"], $Row["UserName"], $Row["Password"], $Row["Email"], $Row["DateOfBirth"], $Row["Phone"], $Row["Address"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}

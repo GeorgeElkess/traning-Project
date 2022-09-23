@@ -32,11 +32,13 @@ class OptionValues
 	function setValues($Values) {
 		$this->Values = $Values;
 	}
-	public function __construct($Id=null,$PCOId=null,$ProductId=null,$Values=null) {
+	public function __construct($Id=null,$PCOId=null,$ProductId=null,$Values=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($PCOId!=null) $this->setPCOId($PCOId);
 		if($ProductId!=null) $this->setProductId($ProductId);
 		if($Values!=null) $this->setValues($Values);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(OptionValues $var) {
 		if($this->PCOId!=$var->getPCOId()) return false;
@@ -49,6 +51,24 @@ class OptionValues
 		if($this->ProductId == 0) return false;
 		if($this->Values == "") return false;
 		return true;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class OptionValuesManger {
@@ -70,6 +90,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getPCOId());
 		$Insert->Attach($Info->getProductId());
 		$Insert->Attach($Info->getValues());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -82,7 +104,7 @@ private function __construct() { }
 		else $Info->setPCOId($OldData->getPCOId());
 		if($Info->getProductId()!=0) $Set->Attach("ProductId", $Info->getProductId());
 		else $Info->setProductId($OldData->getProductId());
-		if($Info->getValues()!="") $Set->Attach("Values", $Info->getValues());
+		if($Info->getValues()!="") $Set->Attach("Value", $Info->getValues());
 		else $Info->setValues($OldData->getValues());
 		if(!ProductCategoryOptionManger::GetById($Info->getPCOId())) return false;
 		if(!ProductManger::GetById($Info->getProductId())) return false;
@@ -92,6 +114,7 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("OptionValues");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -103,13 +126,13 @@ private function __construct() { }
 			if ($Info->getId() != 0) $Condition->Attach("Id", $Info->getId());
 			if ($Info->getPCOId() != 0) $Condition->Attach("PCOId", $Info->getPCOId());
 			if ($Info->getProductId() != 0) $Condition->Attach("ProductId", $Info->getProductId());
-			if ($Info->getValues() != "") $Condition->Attach("Values", $Info->getValues());
+			if ($Info->getValues() != "") $Condition->Attach("Value", $Info->getValues());
 		}
 		$Table = new TableManger("OptionValues");
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new OptionValues($Row["Id"], $Row["PCOId"], $Row["ProductId"], $Row["Values"]));
+			array_push($Result, new OptionValues($Row["Id"], $Row["PCOId"], $Row["ProductId"], $Row["Value"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}
@@ -124,7 +147,7 @@ private function __construct() { }
 		if ($Info->getId() != 0) $Condition->Attach("Id", $Info->getId());
 		if ($Info->getPCOId() != 0) $Condition->Attach("PCOId", $Info->getPCOId());
 		if ($Info->getProductId() != 0) $Condition->Attach("ProductId", $Info->getProductId());
-		if ($Info->getValues() != "") $Condition->Attach("Values", $Info->getValues());
+		if ($Info->getValues() != "") $Condition->Attach("Value", $Info->getValues());
 		$Table = new TableManger("OptionValues");
 		$Table->Delete($Condition);
 		return true;

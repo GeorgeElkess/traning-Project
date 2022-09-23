@@ -39,12 +39,14 @@ class OrderDetails
 	function setNumber($Number) {
 		$this->Number = floatval($Number);
 	}
-	public function __construct($Id=null,$OrderId=null,$ProductId=null,$CurrentPrice=null,$Number=null) {
+	public function __construct($Id=null,$OrderId=null,$ProductId=null,$CurrentPrice=null,$Number=null,$CreatedAt=null,$UpdatedAt=null) {
 		if($Id!=null) $this->setId($Id);
 		if($OrderId!=null) $this->setOrderId($OrderId);
 		if($ProductId!=null) $this->setProductId($ProductId);
 		if($CurrentPrice!=null) $this->setCurrentPrice($CurrentPrice);
 		if($Number!=null) $this->setNumber($Number);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(OrderDetails $var) {
 		if($this->OrderId!=$var->getOrderId()) return false;
@@ -59,6 +61,24 @@ class OrderDetails
 		if($this->CurrentPrice == 0) return false;
 		if($this->Number == 0) return false;
 		return true;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class OrderDetailsManger {
@@ -81,6 +101,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getProductId());
 		$Insert->Attach($Info->getCurrentPrice());
 		$Insert->Attach($Info->getNumber());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -105,6 +127,8 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		date_default_timezone_set("Egypt/Cairo");
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("OrderDetails");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -123,7 +147,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new OrderDetails($Row["Id"], $Row["OrderId"], $Row["ProductId"], $Row["CurrentPrice"], $Row["Number"]));
+			array_push($Result, new OrderDetails($Row["Id"], $Row["OrderId"], $Row["ProductId"], $Row["CurrentPrice"], $Row["Number"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}

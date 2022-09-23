@@ -25,10 +25,12 @@ class Orders
 	function setDate($Date) {
 		$this->Date = $Date;
 	}
-	public function __construct($Id=null,$UserId=null,$Date=null) {
+	public function __construct($Id=null,$UserId=null,$Date=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($UserId!=null) $this->setUserId($UserId);
 		if($Date!=null) $this->setDate($Date);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(Orders $var) {
 		if($this->UserId!=$var->getUserId()) return false;
@@ -39,6 +41,24 @@ class Orders
 		if($this->UserId == 0) return false;
 		if($this->Date == "") return false;
 		return true;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class OrdersManger {
@@ -58,6 +78,8 @@ private function __construct() { }
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getUserId());
 		$Insert->Attach($Info->getDate());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -77,6 +99,7 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("Orders");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -93,7 +116,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new Orders($Row["Id"], $Row["UserId"], $Row["Date"]));
+			array_push($Result, new Orders($Row["Id"], $Row["UserId"], $Row["Date"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}

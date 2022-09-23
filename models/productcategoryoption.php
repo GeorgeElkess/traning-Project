@@ -26,10 +26,12 @@ class ProductCategoryOption
 	function setOptionId($OptionId) {
 		$this->OptionId = floatval($OptionId);
 	}
-	public function __construct($Id=null,$CategoryId=null,$OptionId=null) {
+	public function __construct($Id=null,$CategoryId=null,$OptionId=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($CategoryId!=null) $this->setCategoryId($CategoryId);
 		if($OptionId!=null) $this->setOptionId($OptionId);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(ProductCategoryOption $var) {
 		if($this->CategoryId!=$var->getCategoryId()) return false;
@@ -40,6 +42,36 @@ class ProductCategoryOption
 		if($this->CategoryId == 0) return false;
 		if($this->OptionId == 0) return false;
 		return true;
+	}
+	public function getName(){
+		$Name = "";
+		if($this->CategoryId==null) return false;
+		$Category = ProductCategoryManger::GetById($this->CategoryId);
+		if($Category==false) return false;
+		$Name = $Category->getName();
+		if($this->OptionId==null) return false;
+		$Option = OptionsManger::GetById($this->OptionId);
+		if($Option == false) return false;
+		$Name .=" ".$Option->getName();
+		return $Name;
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
 	}
 }
 class ProductCategoryOptionManger {
@@ -60,6 +92,8 @@ private function __construct() { }
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getCategoryId());
 		$Insert->Attach($Info->getOptionId());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -80,6 +114,7 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("ProductCategoryOption");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -96,7 +131,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new ProductCategoryOption($Row["Id"], $Row["CategoryId"], $Row["OptionId"]));
+			array_push($Result, new ProductCategoryOption($Row["Id"], $Row["CategoryId"], $Row["OptionId"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}

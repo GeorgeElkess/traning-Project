@@ -1,4 +1,7 @@
 <?php
+
+use ProductManger as GlobalProductManger;
+
 include_once "orderdetails.php";
 include_once "optionvalues.php";
 include_once "dbmanger.php";
@@ -40,12 +43,14 @@ class Product
 	function setImagePath($ImagePath) {
 		$this->ImagePath = $ImagePath;
 	}
-	public function __construct($Id=null,$CategoryId=null,$Name=null,$Price=null,$ImagePath=null) {
+	public function __construct($Id=null,$CategoryId=null,$Name=null,$Price=null,$ImagePath=null, $CreatedAt = null, $UpdatedAt = null) {
 		if($Id!=null) $this->setId($Id);
 		if($CategoryId!=null) $this->setCategoryId($CategoryId);
 		if($Name!=null) $this->setName($Name);
 		if($Price!=null) $this->setPrice($Price);
 		if($ImagePath!=null) $this->setImagePath($ImagePath);
+		if ($CreatedAt != null) $this->setCreatedAt($CreatedAt);
+		if ($UpdatedAt != null) $this->setUpdatedAt($UpdatedAt);
 	}
 	public function Equals(Product $var) {
 		if($this->CategoryId!=$var->getCategoryId()) return false;
@@ -61,6 +66,49 @@ class Product
 		if($this->ImagePath == "") return false;
 		return true;
 	}
+	public function GetExtraValues() {
+		if($this->Id == 0) return false;
+		$Product = ProductManger::GetById($this->Id);
+		$ExtraValues = [];
+		$PCO = ProductCategoryOptionManger::GetAll(new ProductCategoryOption(null,$Product->getCategoryId()));
+		if($PCO!=false){
+			foreach ($PCO as $x) {
+				$option = OptionsManger::GetById($x->getOptionId());
+				$value = OptionValuesManger::GetAll(new OptionValues(null,$x->getId(),$Product->getId()));
+				if($value!=false) $value = $value[0]->getValues();
+				else $value="";
+				array_push($ExtraValues,new ExtraValues($option->getName(),$option->getType(),$value));
+			}
+		}
+	}
+	private $CreatedAt = "";
+	private $UpdatedAt = "";
+	public function setCreatedAt($CreatedAt)
+	{
+		$this->CreatedAt = $CreatedAt;
+	}
+	public function setUpdatedAt($UpdatedAt)
+	{
+		$this->UpdatedAt = $UpdatedAt;
+	}
+	public function getCreatedAt()
+	{
+		return $this->CreatedAt;
+	}
+	public function getUpdatedAt()
+	{
+		return $this->UpdatedAt;
+	}
+}
+class ExtraValues{
+	public $Name="";
+	public $Type="";
+	public $Value = "";
+	public function __construct($Name=null,$Type=null,$Value=null) {
+		$this->Name = $Name;
+		$this->Type = $Type;
+		$this->Value = $Value;
+	}
 }
 class ProductManger {
 private function __construct() { }
@@ -75,7 +123,7 @@ private function __construct() { }
 				$LastId = $Data->getId();
 			}
 		}
-		$TargetDir = "../images/";
+		$TargetDir = "../../images/";
 		$TargetFile = $TargetDir . basename($_FILES["ImagePath"]["name"]);
 		$imageFileType = strtolower(pathinfo($TargetFile, PATHINFO_EXTENSION));
 		$check = getimagesize($_FILES["ImagePath"]["tmp_name"]);
@@ -94,6 +142,8 @@ private function __construct() { }
 		$Insert->Attach($Info->getName());
 		$Insert->Attach($Info->getPrice());
 		$Insert->Attach($Info->getImagePath());
+		$Insert->Attach(date("y-m-d"));
+		$Insert->Attach("");
 		$Table->Insert($Insert);
 		return true;
 	}
@@ -117,6 +167,23 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
+		if(isset($_FILES["ImagePath"])){
+			$TargetDir = "../../images/";
+			$TargetFile = $TargetDir . basename($_FILES["ImagePath"]["name"]);
+			$imageFileType = strtolower(pathinfo($TargetFile, PATHINFO_EXTENSION));
+			$check = getimagesize($_FILES["ImagePath"]["tmp_name"]);
+			$UploadFile = true;
+			if ($check !== false) {
+			} else $UploadFile = false;
+			if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+				$UploadFile = false;
+			}
+			if ($UploadFile == false) return false;
+			move_uploaded_file($_FILES["ImagePath"]["tmp_name"], $TargetFile);
+			unlink($OldData->getImagePath());
+			$Info->setImagePath($TargetFile);
+		}
+		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("Product");
 		$Table->Update($Condition, $Set);
 		return true;
@@ -135,7 +202,7 @@ private function __construct() { }
 		$AllData = $Table->GetAll($Condition);
 		if (count($AllData) == 0) return false;
 		foreach ($AllData as $Row) {
-			array_push($Result, new Product($Row["Id"], $Row["CategoryId"], $Row["Name"], $Row["Price"], $Row["ImagePath"]));
+			array_push($Result, new Product($Row["Id"], $Row["CategoryId"], $Row["Name"], $Row["Price"], $Row["ImagePath"], $Row["CreatedAt"], $Row["UpdatedAt"]));
 		}
 		return $Result;
 	}
@@ -168,6 +235,10 @@ private function __construct() { }
 			foreach($AllData as $Data) {
 				OrderDetailsManger::Delete(new OrderDetails($Data->getId()));
 			}
+		}
+		$AllData = ProductManger::GetAll($Info);
+		foreach ($AllData as $Data) {
+			unlink($Data->getImagePath());
 		}
 		$Table->Delete($Condition);
 		return true;
