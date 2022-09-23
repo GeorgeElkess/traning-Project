@@ -1,6 +1,6 @@
 
 <?php
-   include_once "includes.php";
+   include_once "../includes.php";
      $id=Encryption::Decrypt($_REQUEST["id_product"]);
      $obj=new connection();
      $obj->return_special_colom("product",$id,"CategoryId","Id");

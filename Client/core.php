@@ -1,5 +1,5 @@
 <?php
-include_once "includes.php";
+include_once "../includes.php";
 
 if(isset($_GET["product_id"])&&isset($_GET["count"]))
 {
