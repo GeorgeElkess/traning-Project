@@ -27,5 +27,5 @@ if ($AllData != false) {
 CardManger::Delete(new Card($User->getId()));
 ?>
 <script>
-  location.replace('/GitHub/traning-Project/Client/printorder.php?Id=<?php echo $OrderId?>');
+  location.replace('/GitHub/traning-Project/Client/printorder.php?Id=<?php echo Encryption::Encrypt($OrderId)?>');
 </script>
