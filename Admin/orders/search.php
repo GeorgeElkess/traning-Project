@@ -12,6 +12,7 @@ if($AllData!=false){
         echo "<td>" . $Data->getCreatedAt() . "</td>";
         echo "<td>" . $Data->getUpdatedAt() . "</td>";
         echo "<td>" . "<a href='../orderdetails/index.php?OrderId=" . Encryption::Encrypt($Data->getId()) . "'>Details</a>" . "</td>";
+        echo "<td>" . "<a href='printorder.php?Id=" . Encryption::Encrypt($Data->getId()) . "'>Print</a>" . "</td>";
         echo "<td>" . "<a href=update.php?Id=" . Encryption::Encrypt($Data->getId()) . ">Update</a>" . "</td>";
         echo "<td>" . "<a href=delete.php?Id=" . Encryption::Encrypt($Data->getId()) . ">Delete</a>" . "</td>";
         echo "</tr>";
