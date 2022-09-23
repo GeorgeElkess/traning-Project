@@ -1,9 +1,9 @@
 <?php
-include_once "../header.php";
-include_once "../../includes.php";
 if (session_id() == '') {
     session_start();
 }
+include_once "../header.php";
+include_once "../../includes.php";
 if (!isset($_SESSION["UserId"])) {
     echo "<script>
             location.replace('/GitHub/traning-Project/Login/index.php');
