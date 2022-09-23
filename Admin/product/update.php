@@ -55,7 +55,7 @@ $User = ProductManger::GetById(intval(Encryption::Decrypt($_GET["Id"])));
                             <input class="contactus" placeholder="Price" type="number" step=".1" name="Price" value="<?php echo $User->getPrice(); ?>">
                         </div>
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="ImagePath" type="file" name="ImagePath" value="<?php echo $User->getImagePath(); ?>">
+                            <input class="contactus" placeholder="ImagePath" type="file" name="ImagePath">
                         </div>
                         <div Id="Extra Data"></div>
                         <div class="col-md-12">
@@ -73,16 +73,20 @@ $User = ProductManger::GetById(intval(Encryption::Decrypt($_GET["Id"])));
                             <?php
                             $i = 0;
                             $AllData = ProductCategoryOptionManger::GetAll();
-                            foreach ($AllData as $Data) {
-                                $x = OptionsManger::GetById($Data->getOptionId());
-                                echo "check[$i]={PCOId:" . $Data->getId() . ", CategoryId:'" . $Data->getCategoryId() . "', Name:'" . $x->getName() . "', Type:'" . $x->getType() . "'};";
-                                $i++;
+                            if($AllData!=false){
+                                foreach ($AllData as $Data) {
+                                    $x = OptionsManger::GetById($Data->getOptionId());
+                                    echo "check[$i]={PCOId:" . $Data->getId() . ", CategoryId:'" . $Data->getCategoryId() . "', Name:'" . $x->getName() . "', Type:'" . $x->getType() . "'};";
+                                    $i++;
+                                }
                             }
                             $AllData = OptionValuesManger::GetAll(new OptionValues(null, null, $User->getId()));
                             $i = 0;
-                            foreach ($AllData as $Data) {
-                                echo "v[$i]={PCOId: " . $Data->getPCOId() . ", Value:'" . $Data->getValues() . "'};";
-                                $i++;
+                            if($AllData!=false){
+                                foreach ($AllData as $Data) {
+                                    echo "v[$i]={PCOId: " . $Data->getPCOId() . ", Value:'" . $Data->getValues() . "'};";
+                                    $i++;
+                                }
                             }
                             ?>
                             x = document.getElementById("Extra Data");

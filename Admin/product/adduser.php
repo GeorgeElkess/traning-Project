@@ -10,11 +10,13 @@ if(ProductManger::Add($User)) {
         $ProductId = $Data->getId();
     }
     $AllData = ProductCategoryOptionManger::GetAll(new ProductCategoryOption(null,$CategoryId));
-    foreach ($AllData as $Data) {
-        $Option = OptionsManger::GetById($Data->getOptionId());
-        $OptionName = $Option->getName();
-        if(isset($_POST[$OptionName])) {
-            OptionValuesManger::Add(new OptionValues(null,$Data->getId(),$ProductId,$_POST[$OptionName]));
+    if($AllData!=false){
+        foreach ($AllData as $Data) {
+            $Option = OptionsManger::GetById($Data->getOptionId());
+            $OptionName = $Option->getName();
+            if(isset($_POST[$OptionName])) {
+                OptionValuesManger::Add(new OptionValues(null,$Data->getId(),$ProductId,$_POST[$OptionName]));
+            }
         }
     }
     ?> 

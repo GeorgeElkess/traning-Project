@@ -9,20 +9,22 @@ if (isset($Price)) $User->setPrice($Price);
 if (isset($ImagePath)) $User->setImagePath($ImagePath);
 if (ProductManger::Update(intval($Id), $User)) {
     $Flag = true;
-} else {
-    $ProductId = 0;
-    $AllData = ProductManger::GetAll();
-    foreach ($AllData as $Data) {
-        $ProductId = $Data->getId();
-    }
-    $AllData = ProductCategoryOptionManger::GetAll(new ProductCategoryOption(null, $CategoryId));
+}
+$ProductId = $Id;
+$AllData = ProductCategoryOptionManger::GetAll(new ProductCategoryOption(null, $CategoryId));
+if($AllData!=false) {
     foreach ($AllData as $Data) {
         $Option = OptionsManger::GetById($Data->getOptionId());
         $OptionName = $Option->getName();
         if (isset($_POST[$OptionName])) {
             $Flag = true;
-            $OptionValue = OptionValuesManger::GetAll(new OptionValues(null, $Data->getId(), $ProductId))[0];
-            OptionValuesManger::Update($OptionValue->getId(), new OptionValues(null, $Data->getId(), $ProductId, $_POST[$OptionName]));
+            $OptionValue = OptionValuesManger::GetAll(new OptionValues(null, $Data->getId(), $ProductId));
+            if($OptionValue!=false) {
+                $OptionValue = $OptionValue[0];
+                OptionValuesManger::Update($OptionValue->getId(), new OptionValues(null, $Data->getId(), $ProductId, $_POST[$OptionName]));
+            } else {
+                OptionValuesManger::Add(new OptionValues(null,$Data->getId(),$ProductId, $_POST[$OptionName]));
+            }
         }
     }
 }

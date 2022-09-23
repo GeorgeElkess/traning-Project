@@ -124,6 +124,7 @@ private function __construct() { }
 			}
 		}
 		$TargetDir = "../../images/";
+		$Name = basename($_FILES["ImagePath"]["name"]);
 		$TargetFile = $TargetDir . basename($_FILES["ImagePath"]["name"]);
 		$imageFileType = strtolower(pathinfo($TargetFile, PATHINFO_EXTENSION));
 		$check = getimagesize($_FILES["ImagePath"]["tmp_name"]);
@@ -135,7 +136,8 @@ private function __construct() { }
 		}
 		if ($UploadFile == false) return false;
 		move_uploaded_file($_FILES["ImagePath"]["tmp_name"], $TargetFile);
-		$Info->setImagePath($TargetFile);
+		$Location = "/GitHub/traning-Project/images/".$Name;
+		$Info->setImagePath($Location);
 		$Table = new TableManger("Product");
 		$Insert = new InsertStatment($LastId + 1);
 		$Insert->Attach($Info->getCategoryId());
@@ -161,15 +163,10 @@ private function __construct() { }
 		if($Info->getImagePath()!="") $Set->Attach("ImagePath", $Info->getImagePath());
 		else $Info->setImagePath($OldData->getImagePath());
 		if(!ProductCategoryManger::GetById($Info->getCategoryId())) return false;
-		$AllData = ProductManger::GetAll();
-		if($AllData != false) {
-			foreach ($AllData as $Data) {
-				if($Info->Equals($Data)) return false;
-			}
-		}
-		if(isset($_FILES["ImagePath"])){
+		if(isset($_FILES["ImagePath"]["tmp_name"]) && $_FILES["ImagePath"]["tmp_name"]!="") {
 			$TargetDir = "../../images/";
 			$TargetFile = $TargetDir . basename($_FILES["ImagePath"]["name"]);
+			$Name = basename($_FILES["ImagePath"]["name"]);
 			$imageFileType = strtolower(pathinfo($TargetFile, PATHINFO_EXTENSION));
 			$check = getimagesize($_FILES["ImagePath"]["tmp_name"]);
 			$UploadFile = true;
@@ -180,8 +177,17 @@ private function __construct() { }
 			}
 			if ($UploadFile == false) return false;
 			move_uploaded_file($_FILES["ImagePath"]["tmp_name"], $TargetFile);
-			unlink($OldData->getImagePath());
-			$Info->setImagePath($TargetFile);
+			unlink($_SERVER["DOCUMENT_ROOT"] . $OldData->getImagePath());
+			$Location = "/GitHub/traning-Project/images/" . $Name;
+			$Set->Attach("ImagePath",$Location);
+			$Info->setImagePath($Location);
+		} else {
+			$AllData = ProductManger::GetAll();
+			if($AllData != false) {
+				foreach ($AllData as $Data) {
+					if($Info->Equals($Data)) return false;
+				}
+			}
 		}
 		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("Product");
@@ -238,7 +244,7 @@ private function __construct() { }
 		}
 		$AllData = ProductManger::GetAll($Info);
 		foreach ($AllData as $Data) {
-			unlink($Data->getImagePath());
+			unlink($_SERVER["DOCUMENT_ROOT"] . $Data->getImagePath());
 		}
 		$Table->Delete($Condition);
 		return true;
