@@ -1,6 +1,34 @@
 <?php
 include_once "../header.php";
 include_once "../includes.php";
+if (session_id() == '') {
+    session_start();
+}
+if (isset($_SESSION["UserId"])) {
+    $User = UserManger::GetById($_SESSION["UserId"]);
+    if ($User == false) {
+    ?>
+        <script>
+            location.replace("Logout.php");
+        </script>
+    <?php
+    exit;
+    }
+    if ($User->getTypeId() == 1) {
+    ?>
+        <script>
+            location.replace("../Admin/user/");
+        </script>
+    <?php
+    } else {
+    ?>
+        <script>
+            location.replace("../Client/");
+        </script>
+<?php
+    }
+    exit;
+}
 ?>
 <!--  contact -->
 <div class="contact">

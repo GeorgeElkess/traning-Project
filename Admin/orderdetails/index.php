@@ -104,9 +104,11 @@ if (isset($_GET["OrderId"])) $OrderId = intval(Encryption::Decrypt($_GET["OrderI
                     check = [];
                     <?php
                     $AllData = ProductManger::GetAll();
-                    for ($i = 0; $i < count($AllData); $i++) {
-                        $Data = $AllData[$i];
-                        echo "check[$i]={Id:" . $Data->getId() . ", Price:" . $Data->getPrice() . "};";
+                    if($AllData != false){
+                        for ($i = 0; $i < count($AllData); $i++) {
+                            $Data = $AllData[$i];
+                            echo "check[$i]={Id:" . $Data->getId() . ", Price:" . $Data->getPrice() . "};";
+                        }
                     }
                     ?>
                     for (let i = 0; i < check.length; i++) {
