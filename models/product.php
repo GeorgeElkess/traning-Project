@@ -177,10 +177,12 @@ private function __construct() { }
 			}
 			if ($UploadFile == false) return false;
 			move_uploaded_file($_FILES["ImagePath"]["tmp_name"], $TargetFile);
-			unlink($_SERVER["DOCUMENT_ROOT"] . $OldData->getImagePath());
 			$Location = "/GitHub/traning-Project/images/" . $Name;
 			$Set->Attach("ImagePath",$Location);
 			$Info->setImagePath($Location);
+			if($OldData->getImagePath() != $Info->getImagePath()){
+				unlink($_SERVER["DOCUMENT_ROOT"] . $OldData->getImagePath());
+			}
 		} else {
 			$AllData = ProductManger::GetAll();
 			if($AllData != false) {

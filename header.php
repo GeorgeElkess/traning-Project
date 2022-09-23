@@ -1,5 +1,5 @@
 <?php
- if (session_id() == '') {
+if (session_id() == '') {
     session_start();
 }
 ?>
@@ -53,7 +53,7 @@
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
-                                    <a href="index.html"><img src="/GitHub/traning-Project/images/logo.png" alt="#" /></a>
+                                    <a href="/GitHub/traning-Project/index.php"><img src="/GitHub/traning-Project/images/logo.png" alt="#" /></a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item d_none">
                                         <?php
-                                       
+
                                         if (isset($_SESSION["UserId"])) { ?>
                                             <a class="nav-link" href="/GitHub/traning-Project/Login/Logout.php">Logout</a>
                                         <?php } else { ?>
