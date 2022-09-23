@@ -11,6 +11,3 @@ include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/user.ph
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/usertype.php";
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/data_base_ali.php";
 include_once $_SERVER["DOCUMENT_ROOT"] . "/GitHub/traning-Project/models/Buy_now.php";
-
-
-

@@ -17,7 +17,7 @@ if (isset($_GET["Id"])) $Id = intval(Encryption::Decrypt($_GET["Id"]));
 
 <table width=100%>
     <tr width=100%>
-        <td width=35%>
+        <td width=65%>
             <div class="contact">
                 <div class="container">
                     <div class="row">
@@ -85,7 +85,7 @@ if (isset($_GET["Id"])) $Id = intval(Encryption::Decrypt($_GET["Id"]));
                 }
             </script>
         </td>
-        <td width=65%>
+        <td width=45%>
             <h2>
                 <a href="Add.php"> Add User</a>
             </h2>

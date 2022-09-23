@@ -44,8 +44,21 @@
         </div>
     </div>
 </footer>
+</div>
 <!-- end footer -->
 <!-- Javascript files-->
+
+<script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("Body").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("Body").style.marginLeft = "0";
+    }
+</script>
 <script src="/GitHub/traning-Project/js/jquery.min.js"></script>
 <script src="/GitHub/traning-Project/js/popper.min.js"></script>
 <script src="/GitHub/traning-Project/js/bootstrap.bundle.min.js"></script>
