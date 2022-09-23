@@ -58,6 +58,7 @@ echo  '<div id="a">' . "  the date is :" . $obj3->arry_object[0] . '</div>' . "<
         <th> product name</th>
         <th> price</th>
         <th> Amount</th>
+        <th> Total</th>
 
     </tr>
 
@@ -67,8 +68,8 @@ echo  '<div id="a">' . "  the date is :" . $obj3->arry_object[0] . '</div>' . "<
     //  echo count($obj6->arry_object)."<br>";
     //  echo count($obj7->arry_object)."<br>";
     for ($i = 0; $i < count($obj5->arry_object); $i++) {
-
-        echo "<tr>" . "<td>" . $obj5->arry_object[$i] . "</td>" . "<td>" . $obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>" . "</tr>" . "</td>";
+        $total_row = $obj7->arry_object[$i] * $obj6->arry_object[$i];
+        echo "<tr>" . "<td>" . $obj5->arry_object[$i] . "</td>" . "<td>" . $obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>" . "<td>" . $total_row . "</td>" . "</tr>" . "</td>";
     }
     $total_price = 0;
     for ($i = 0; $i < count($obj6->arry_object); $i++) {
