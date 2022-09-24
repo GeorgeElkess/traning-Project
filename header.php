@@ -67,6 +67,11 @@ if (session_id() == '') {
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item d_none">
                                         <span>
+                                            <a class="nav-link" href="/GitHub/Traning-Project/Client/profile.php">Profile</a>
+                                        </span>
+                                    </li>
+                                    <li class="nav-item d_none">
+                                        <span>
                                             <a class="nav-link" href="/GitHub/Traning-Project/Client/All_orders.php">All Orders</a>
                                         </span>
                                     </li>
@@ -77,7 +82,6 @@ if (session_id() == '') {
                                                 <a class="nav-link" href="/GitHub/traning-Project/Login/Logout.php">Logout</a>
                                             <?php } else { ?>
                                                 <a class="nav-link" href="/GitHub/traning-Project/Login/SignUp.php">SignUp</a>
-
                                             <?php } ?>
                                         </span>
                                     </li>

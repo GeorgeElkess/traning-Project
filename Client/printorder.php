@@ -74,22 +74,19 @@ include_once "../includes.php";
     //  echo count($obj5->arry_object)."<br>";
     //  echo count($obj6->arry_object)."<br>";
     //  echo count($obj7->arry_object)."<br>";
+    $SubTotal = 0;
      for ($i = 0; $i<count($obj5->arry_object); $i++) 
      {
         $total_row= $obj7->arry_object[$i]*$obj6->arry_object[$i];
+        $SubTotal += $total_row;
        echo "<tr>"."<td>".$obj5->arry_object[$i]."</td>"."<td>".$obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>". "<td>" .$total_row. "</td>" . "</tr>" . "</td>";
-     }
-     $total_price=0;
-     for ($i = 0; $i < count($obj6->arry_object); $i++) 
-     {
-        $total_price+=$obj6->arry_object[$i]*$obj7->arry_object[$i];
      }
 
      ?>
    </table>
     <?php
 
-      echo  '<div id="a">'."total price is :".$total_price." $".'</div>';
+      echo  '<div id="a">'."total price is :".$SubTotal." $".'</div>';
     ?>
    
    <!-- the css for the add form -->

@@ -14,6 +14,7 @@ if(ProductManger::Add($User)) {
         foreach ($AllData as $Data) {
             $Option = OptionsManger::GetById($Data->getOptionId());
             $OptionName = $Option->getName();
+            $OptionName = str_replace(" ", "_", $OptionName);
             if(isset($_POST[$OptionName])) {
                 OptionValuesManger::Add(new OptionValues(null,$Data->getId(),$ProductId,$_POST[$OptionName]));
             }

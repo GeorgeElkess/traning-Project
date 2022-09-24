@@ -16,6 +16,7 @@ if($AllData!=false) {
     foreach ($AllData as $Data) {
         $Option = OptionsManger::GetById($Data->getOptionId());
         $OptionName = $Option->getName();
+        $OptionName = str_replace(" ","_",$OptionName);
         if (isset($_POST[$OptionName])) {
             $Flag = true;
             $OptionValue = OptionValuesManger::GetAll(new OptionValues(null, $Data->getId(), $ProductId));
