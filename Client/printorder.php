@@ -1,4 +1,13 @@
 <?php 
+    if (session_id() == '') {
+      session_start();
+    }
+    if (!isset($_SESSION["UserId"])) {
+      echo "<script>
+            location.replace('/GitHub/traning-Project/Login/index.php');
+        </script>";
+      exit;
+    }
 include_once "../includes.php";
     $Id = Encryption::Decrypt($_GET["Id"]);
    $obj=new connection();

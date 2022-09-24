@@ -2,6 +2,12 @@
 if (session_id() == '') {
     session_start();
 }
+if (!isset($_SESSION["UserId"])) {
+    echo "<script>
+            location.replace('/GitHub/traning-Project/Login/index.php');
+        </script>";
+    exit;
+}
 include_once "../includes.php";
 
 if(isset($_GET["product_id"])&&isset($_GET["count"]))

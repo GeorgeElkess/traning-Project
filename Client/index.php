@@ -1,6 +1,15 @@
-<?php include_once "../includes.php"; 
-  
+<?php 
 
+   if (session_id() == '') {
+      session_start();
+   }
+   if (!isset($_SESSION["UserId"])) {
+      echo "<script>
+            location.replace('/GitHub/traning-Project/Login/index.php');
+        </script>";
+      exit;
+   }
+include_once "../includes.php";
    // here make php filter get the data and return to ajax to the same page
   
    if(isset($_GET["product_id"]))

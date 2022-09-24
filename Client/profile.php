@@ -1,13 +1,19 @@
 <?php
-include_once "../models/user.php";
 if (session_id() == '') {
     session_start();
 }
+if(!isset($_SESSION["UserId"])){
+    echo "<script>
+            location.replace('/GitHub/traning-Project/Login/index.php');
+        </script>";
+    exit;
+}
+include_once "../models/user.php";
 include_once "../header.php";
 include_once "../includes.php";
 
 // take the id of the user bu sesstion
-   $user_id=1;
+   $user_id=$_SESSION["UserId"];
    $user_name=new connection();
    $Email=new connection();
    $password=new connection();
@@ -15,13 +21,13 @@ include_once "../includes.php";
    $Phone=new connection();
     $Address=new connection();
 
-    $user_name->return_special_colom("user",1,"UserName","Id");
+    $user_name->return_special_colom("user",$user_id,"UserName","Id");
     if($user_name->i==0){return;}
-    $Email->return_special_colom("user",1,"Email","Id");
-    $password->return_special_colom("user",1,"Password","Id");
-    $date->return_special_colom("user",1,"DateOfBirth","Id");
-    $Phone->return_special_colom("user",1,"Phone","Id");
-    $Address->return_special_colom("user",1,"Address","Id");
+    $Email->return_special_colom("user",$user_id,"Email","Id");
+    $password->return_special_colom("user",$user_id,"Password","Id");
+    $date->return_special_colom("user",$user_id,"DateOfBirth","Id");
+    $Phone->return_special_colom("user",$user_id,"Phone","Id");
+    $Address->return_special_colom("user",$user_id,"Address","Id");
    
 
 
@@ -47,19 +53,12 @@ include_once "../includes.php";
                         <div class="col-md-12">
                             <input class="contactus" placeholder="Email"     value="<?php echo $Email->arry_object[0] ?>" type="Email" name="Email">
                         </div>
-
                         <div class="col-md-12">
-                            <input class="contactus"  id="pass"  onkeyup="password(this.value) " value="<?php echo $password->arry_object[0] ?>"      placeholder="Password" type="password" name="Password">
+                            <input class="contactus"  id="pass"  onkeyup="password(this.value) "  placeholder="Password" type="password" name="Password">
                         </div> 
-                        
-
-                        
-                        
-                         
                         <div class="col-md-12">
                             <input class="contactus" id="confrim"   onkeyup="check(this.value) " placeholder="Confirm Password"    type="password" name="ConPassword">
                         </div>
-                        
                         <div class="col-md-12">
                             <input class="contactus" placeholder="Date of Birth"  value="<?php echo $date->arry_object[0] ?>" type="Date" name="DateOfBirth">
                         </div>
