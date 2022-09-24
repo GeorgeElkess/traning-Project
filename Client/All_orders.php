@@ -1,11 +1,9 @@
 <?php
-
-
-// if (session_id() == '') {
-//     session_start();
-// }
+if (session_id() == '') {
+    session_start();
+}
 include_once "../includes.php";
-$user_id=1;
+$user_id=($_SESSION["UserId"]);
 ?>
 <!-- here will filter the date -->
         <?php
@@ -60,7 +58,7 @@ $user_id=1;
        for ($i = 0; $i<count($obj->arry_object); $i++) 
        {
       
-        echo "<tr>"."<td>".$obj->arry_object[$i]."</td>"."<td>".$obj2->arry_object[0] . "<td>" . $obj3->arry_object[$i] . "</td>"."<td>" .'<a href="printorder.php?Id='.$obj->arry_object[$i].'">Print</a>'. "</td>" . "</tr>" . "</td>";
+        echo "<tr>"."<td>".$obj->arry_object[$i]."</td>"."<td>".$obj2->arry_object[0] . "<td>" . $obj3->arry_object[$i] . "</td>"."<td>" .'<a href="printorder.php?Id='. Encryption::Encrypt($obj->arry_object[$i]).'">Print</a>'. "</td>" . "</tr>" . "</td>";
        }
 
        ?>
@@ -137,7 +135,7 @@ $user_id=1;
      for ($i = 0; $i<count($obj->arry_object); $i++) 
      {
       
-       echo "<tr>"."<td>".$obj->arry_object[$i]."</td>"."<td>".$obj2->arry_object[0] . "<td>" . $obj3->arry_object[$i] . "</td>"."<td>" .'<a href="printorder.php?Id='.$obj->arry_object[$i].'">Print</a>'. "</td>" . "</tr>" . "</td>";
+       echo "<tr>"."<td>".$obj->arry_object[$i]."</td>"."<td>".$obj2->arry_object[0] . "<td>" . $obj3->arry_object[$i] . "</td>"."<td>" .'<a href="printorder.php?Id='.Encryption::Encrypt($obj->arry_object[$i]).'">Print</a>'. "</td>" . "</tr>" . "</td>";
      }
      
      ?>

@@ -66,16 +66,19 @@ if (session_id() == '') {
                             <div class="collapse navbar-collapse" id="navbarsExample04">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item d_none">
-                                       <span>
-                                        <?php
-                                           
-                                        if (isset($_SESSION["UserId"])) { ?>
-                                            <a class="nav-link" href="/GitHub/traning-Project/Login/Logout.php">Logout</a>
-                                        <?php } else { ?>
-                                            <a class="nav-link" href="/GitHub/traning-Project/Login/SignUp.php">SignUp</a>
-                                             
-                                        <?php } ?>
-                                        <a class="nav-link" href="/GitHub/Traning-Project/Client/All_orders.php">All Orders</a>
+                                        <span>
+                                            <a class="nav-link" href="/GitHub/Traning-Project/Client/All_orders.php">All Orders</a>
+                                        </span>
+                                    </li>
+                                    <li class="nav-item d_none">
+                                        <span>
+                                            <?php
+                                            if (isset($_SESSION["UserId"])) { ?>
+                                                <a class="nav-link" href="/GitHub/traning-Project/Login/Logout.php">Logout</a>
+                                            <?php } else { ?>
+                                                <a class="nav-link" href="/GitHub/traning-Project/Login/SignUp.php">SignUp</a>
+
+                                            <?php } ?>
                                         </span>
                                     </li>
                                 </ul>
