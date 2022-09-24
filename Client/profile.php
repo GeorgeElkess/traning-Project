@@ -5,6 +5,27 @@ if (session_id() == '') {
 }
 include_once "../header.php";
 include_once "../includes.php";
+
+// take the id of the user bu sesstion
+   $user_id=1;
+   $user_name=new connection();
+   $Email=new connection();
+   $password=new connection();
+   $date=new connection();
+   $Phone=new connection();
+    $Address=new connection();
+
+    $user_name->return_special_colom("user",1,"UserName","Id");
+    if($user_name->i==0){return;}
+    $Email->return_special_colom("user",1,"Email","Id");
+    $password->return_special_colom("user",1,"Password","Id");
+    $date->return_special_colom("user",1,"DateOfBirth","Id");
+    $Phone->return_special_colom("user",1,"Phone","Id");
+    $Address->return_special_colom("user",1,"Address","Id");
+   
+
+
+
 ?>
 <!--  contact -->
 <div class="contact">
@@ -12,7 +33,7 @@ include_once "../includes.php";
         <div class="row">
             <div class="col-md-12">
                 <div class="titlepage">
-                    <h2>Sign Up</h2>
+                    <h2>Profile</h2>
                 </div>
             </div>
         </div>
@@ -21,28 +42,35 @@ include_once "../includes.php";
                 <form id="request" class="main_form" method="POST" action="updateuser.php">
                     <div class="row">
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="UserName" type="text" name="UserName">
+                            <input class="contactus"   placeholder="UserName"  value="<?php echo $user_name->arry_object[0] ?>" type="text" name="UserName">
                         </div>
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="Email" type="Email" name="Email">
+                            <input class="contactus" placeholder="Email"     value="<?php echo $Email->arry_object[0] ?>" type="Email" name="Email">
+                        </div>
+
+                        <div class="col-md-12">
+                            <input class="contactus"  id="pass"  onkeyup="password(this.value) " value="<?php echo $password->arry_object[0] ?>"      placeholder="Password" type="password" name="Password">
+                        </div> 
+                        
+
+                        
+                        
+                         
+                        <div class="col-md-12">
+                            <input class="contactus" id="confrim"   onkeyup="check(this.value) " placeholder="Confirm Password"    type="password" name="ConPassword">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <input class="contactus" placeholder="Date of Birth"  value="<?php echo $date->arry_object[0] ?>" type="Date" name="DateOfBirth">
                         </div>
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="Password" type="password" name="Password">
+                            <input class="contactus" placeholder="Phone"  value="<?php echo $Phone->arry_object[0] ?>" type="text" name="Phone">
                         </div>
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="Confirm Password" type="password" name="ConPassword">
+                            <textarea class="textarea"  type="text" name="Address"><?php echo $Address->arry_object[0];?></textarea>
                         </div>
                         <div class="col-md-12">
-                            <input class="contactus" placeholder="Date of Birth" type="Date" name="DateOfBirth">
-                        </div>
-                        <div class="col-md-12">
-                            <input class="contactus" placeholder="Phone" type="text" name="Phone">
-                        </div>
-                        <div class="col-md-12">
-                            <textarea class="textarea" placeholder="Address" type="text" name="Address"></textarea>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="send_btn">Create Account</button>
+                            <button class="send_btn">Update Data</button>
                         </div>
                     </div>
                 </form>
@@ -50,6 +78,73 @@ include_once "../includes.php";
         </div>
     </div>
 </div>
+
+
+
+<script>
+
+
+   
+   function password(inputtx) 
+    {
+        // alert(inputtx);
+
+        let text =inputtx;
+       let code = text.charCodeAt(0);
+       
+  if (isNaN(code)) 
+  {
+    
+   
+    var elem = document.getElementById('confrim');
+    if(elem.hasAttribute('required'))
+    {
+           
+        
+    const input = document.getElementById('confrim');
+    input.removeAttribute('required');
+    }
+   
+  }
+  else
+  {
+     
+     const input = document.getElementById('confrim');
+     input.setAttribute('required', '');
+
+    }
+}
+
+    function check(inputtx) 
+     {
+      code = inputtx.charCodeAt(0);
+    //     alert(code)
+     
+    if (isNaN(code)) 
+    {
+        var elem = document.getElementById('pass').value;
+        if(elem==passwor)
+        {
+          
+        }
+        else
+        {
+            
+            document.getElementById('confrim').value="";  
+            const input = document.getElementById('confrim');
+            input.setAttribute('required', '');  
+            alert("your confirm password no equl to password pleas fill again")
+        }
+    }
+
+    }
+
+</script>
+
+
+
+
+
 <!-- end contact -->
 <?php
 include_once "../footer.php";
