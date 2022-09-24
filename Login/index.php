@@ -7,12 +7,12 @@ if (session_id() == '') {
 if (isset($_SESSION["UserId"])) {
     $User = UserManger::GetById($_SESSION["UserId"]);
     if ($User == false) {
-    ?>
+?>
         <script>
             location.replace("Logout.php");
         </script>
     <?php
-    exit;
+        exit;
     }
     if ($User->getTypeId() == 1) {
     ?>
@@ -52,6 +52,11 @@ if (isset($_SESSION["UserId"])) {
                         </div>
                         <div class="col-md-12">
                             <button class="send_btn">Login</button>
+                        </div>
+                        <div class="col-md-12" style="text-align: center;">
+                            <h3>
+                                <a href="forgetpassword.php" style="color: white;">Forget Password</a>
+                            </h3>
                         </div>
                     </div>
                 </form>
