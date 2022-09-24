@@ -4,7 +4,7 @@ include_once "../../includes.php";
 extract($_POST);
 $User = new ProductCategoryOption();
 if(isset($CategoryId)) $User->setCategoryId($CategoryId);
-if(isset($OPtionId)) $User->setOPtionId($OPtionId);
+if(isset($OptionId)) $User->setOPtionId($OptionId);
 if (ProductCategoryOptionManger::Update(intval($Id),$User)) {
 ?>
     <script>

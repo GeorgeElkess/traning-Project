@@ -42,13 +42,11 @@ $user_id=($_SESSION["UserId"]);
          <?php
               $obj4=new connection();
               $obj4->return_special_colom("orders",$user_id,"Date","UserId");
-                for($i=0;$i<count($obj4->arry_object);$i++)
-                {
-           
-                  echo '<option value='.$obj4->arry_object[$i].'>'.$obj4->arry_object[$i].'</option>';
-                }
-            
+              for($i=0;$i<count($obj4->arry_object);$i++)
+              {
           
+                echo '<option value='.$obj4->arry_object[$i].'>'.$obj4->arry_object[$i].'</option>';
+              }
          ?>
           </optgroup>
         </select> 

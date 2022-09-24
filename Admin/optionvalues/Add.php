@@ -68,17 +68,26 @@ function getName(ProductCategoryOption $Data)
                         </div>
                     </div>
                     <script>
-                        document.getElementById("PCOId").onchange = function() {
+                        document.getElementById("PCOId").onchange = kk;
+                        window.onload = kk;
+                        function kk() {
                             This = document.getElementById("PCOId");
                             PCOId = This.options[This.selectedIndex].value;
                             check = [];
+                            v = [];
                             <?php
                             $i = 0;
                             $AllData = ProductCategoryOptionManger::GetAll();
                             foreach ($AllData as $Data) {
                                 $Option = OptionsManger::GetById($Data->getOptionId());
                                 $Type = $Option->getType();
-                                echo "check[$i]={PCOId: " . $Data->getId() . ", Type:'" . $Type . "'};";
+                                echo "check[$i]={PCOId: " . $Data->getId() . ", Type:'" . $Type . "', Category: " . $Data->getCategoryId() . "};";
+                                $i++;
+                            }
+                            $i = 0;
+                            $AllData = ProductManger::GetAll();
+                            foreach ($AllData as $Data) {
+                                echo "v[$i]={ProductId:" . $Data->getId() . ", ProductName:'" . $Data->getName() . "', Category: " . $Data->getCategoryId() . "};";
                                 $i++;
                             }
                             ?>
@@ -86,6 +95,23 @@ function getName(ProductCategoryOption $Data)
                                 const element = check[i];
                                 if (element.PCOId == PCOId) {
                                     document.getElementById("value").type = element.Type;
+                                    select = document.getElementById("ProductId");
+                                    select.innerHTML = "";
+                                    child = document.createElement("option");
+                                    child.value = 0;
+                                    child.style = "background-color: #4843a3;";
+                                    child.innerHTML = "Non";
+                                    select.appendChild(child);
+                                    for (let j = 0; j < v.length; j++) {
+                                        const x = v[j];
+                                        if (x.Category == element.Category) {
+                                            child = document.createElement("option");
+                                            child.value = x.ProductId;
+                                            child.style = "background-color: #4843a3;";
+                                            child.innerHTML = x.ProductName;
+                                            select.appendChild(child);
+                                        }
+                                    }
                                 }
                             }
                         }

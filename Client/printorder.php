@@ -20,7 +20,6 @@ include_once "../includes.php";
     exit;
 
    }
-
 //    get adderrs
  $obj8=new connection();
  $obj8->return_special_colom("user",$obj->arry_object[0],"Address","Id");
@@ -32,7 +31,8 @@ include_once "../includes.php";
     //Date
     $obj3=new connection();
     $obj3->return_special_colom("orders",$Id,"Date","Id");
-    
+    $obj9 = new connection();
+    $obj9->return_special_colom("orderdetails", $Id, "OrderId", "OrderId");
     //from orderdetails
     $obj4=new connection();
     $obj4->return_special_colom("orderdetails",$Id,"ProductId","OrderId");
@@ -42,14 +42,14 @@ include_once "../includes.php";
     $obj6=new connection();
     //get the count of the product
     $obj7=new connection();
-    for($i=0;$i<count($obj4->arry_object);$i++)
+    for($i=0;$i<count($obj9->arry_object);$i++)
     {
         //all product name
         $obj5->return_special_colom("product",$obj4->arry_object[$i],"Name","Id");
        //   all price
-      $obj6->return_special_colom("orderdetails",$obj4->arry_object[$i],"CurrentPrice","ProductId");
+      $obj6->return_special_colom("orderdetails",$obj9->arry_object[$i],"CurrentPrice","OrderId");
       //count 
-      $obj7->return_special_colom("orderdetails",$obj4->arry_object[$i],"Number","ProductId");
+      $obj7->return_special_colom("orderdetails",$obj9->arry_object[$i],"Number","OrderId");
 
         
     }

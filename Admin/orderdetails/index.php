@@ -151,7 +151,7 @@ if (isset($_GET["OrderId"])) $OrderId = intval(Encryption::Decrypt($_GET["OrderI
                             foreach ($AllData as $Data) {
                                 echo "<tr>";
                                 echo "<td>" . $Data->getId() . "</td>";
-                                echo "<td>" . "<a href='../orders/index.php?Id=" . Encryption::Encrypt($Data->getId()) . "'>" . $Data->getId() . "</a>" . "</td>";
+                                echo "<td>" . "<a href='../orders/index.php?Id=" . Encryption::Encrypt($Data->getOrderId()) . "'>" . $Data->getOrderId() . "</a>" . "</td>";
                                 $Type = ProductManger::GetById($Data->getProductId());
                                 echo "<td>" . "<a href='../product/index.php?Id=" . Encryption::Encrypt($Type->getId()) . "'>" . $Type->getName() . "</a>" . "</td>";
                                 echo "<td>" . $Data->getCurrentPrice() . "</td>";

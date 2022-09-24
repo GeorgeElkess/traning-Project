@@ -1,7 +1,7 @@
 <?php
 include_once "../../includes.php";
 extract($_GET);
-$AllData = ProductManger::GetAll(new Product(@$Id,@$TypeId,@$UserName,null,@$Email,null,@$Phone));
+$AllData = ProductManger::GetAll(new Product($Id,$CategoryId,$Name,$Price,null));
 if($AllData!=false){
     foreach ($AllData as $Data) {
         echo "<tr>";

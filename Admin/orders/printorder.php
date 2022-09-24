@@ -1,4 +1,13 @@
 <?php
+if (session_id() == '') {
+    session_start();
+}
+if (!isset($_SESSION["UserId"])) {
+    echo "<script>
+            location.replace('/GitHub/traning-Project/Login/index.php');
+        </script>";
+    exit;
+}
 include_once "../../includes.php";
 $Id = Encryption::Decrypt($_GET["Id"]);
 $obj = new connection();
@@ -9,7 +18,6 @@ if (count($obj->arry_object) == 0) {
     include_once "../footer.php";
     exit;
 }
-
 //    get adderrs
 $obj8 = new connection();
 $obj8->return_special_colom("user", $obj->arry_object[0], "Address", "Id");
@@ -20,7 +28,8 @@ if (count($obj->arry_object) > 0) {
     //Date
     $obj3 = new connection();
     $obj3->return_special_colom("orders", $Id, "Date", "Id");
-
+    $obj9 = new connection();
+    $obj9->return_special_colom("orderdetails", $Id, "OrderId", "OrderId");
     //from orderdetails
     $obj4 = new connection();
     $obj4->return_special_colom("orderdetails", $Id, "ProductId", "OrderId");
@@ -30,13 +39,13 @@ if (count($obj->arry_object) > 0) {
     $obj6 = new connection();
     //get the count of the product
     $obj7 = new connection();
-    for ($i = 0; $i < count($obj4->arry_object); $i++) {
+    for ($i = 0; $i < count($obj9->arry_object); $i++) {
         //all product name
         $obj5->return_special_colom("product", $obj4->arry_object[$i], "Name", "Id");
         //   all price
-        $obj6->return_special_colom("orderdetails", $obj4->arry_object[$i], "CurrentPrice", "ProductId");
+        $obj6->return_special_colom("orderdetails", $obj9->arry_object[$i], "CurrentPrice", "OrderId");
         //count 
-        $obj7->return_special_colom("orderdetails", $obj4->arry_object[$i], "Number", "ProductId");
+        $obj7->return_special_colom("orderdetails", $obj9->arry_object[$i], "Number", "OrderId");
     }
 }
 
@@ -70,9 +79,10 @@ echo  '<div id="a">' . "  the date is :" . $obj3->arry_object[0] . '</div>' . "<
     $SubTotal = 0;
     for ($i = 0; $i < count($obj5->arry_object); $i++) {
         $total_row = $obj7->arry_object[$i] * $obj6->arry_object[$i];
-        $SubTotal+=$total_row;
+        $SubTotal += $total_row;
         echo "<tr>" . "<td>" . $obj5->arry_object[$i] . "</td>" . "<td>" . $obj6->arry_object[$i] . "<td>" . $obj7->arry_object[$i] . "</td>" . "<td>" . $total_row . "</td>" . "</tr>" . "</td>";
     }
+
     ?>
 </table>
 <?php

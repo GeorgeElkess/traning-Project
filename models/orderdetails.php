@@ -127,7 +127,6 @@ private function __construct() { }
 				if($Info->Equals($Data)) return false;
 			}
 		}
-		date_default_timezone_set("Egypt/Cairo");
 		$Set->Attach("UpdatedAt", date("y-m-d"));
 		$Table = new TableManger("OrderDetails");
 		$Table->Update($Condition, $Set);

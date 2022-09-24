@@ -37,7 +37,7 @@ $User = OrdersManger::GetById(intval(Encryption::Decrypt($_GET["Id"])));
                             <select class="contactus" name="UserId" id="UserId" aria-placeholder="User">
                                 <option value="0" style="background-color: #4843a3;">Non</option>
                                 <?php
-                                $AllData = UserManger::GetAll();
+                                $AllData = UserManger::GetAll(new User(null,2));
                                 foreach ($AllData as $Data) {
                                     if ($Data->getId() == $User->getUserId()) {
                                         echo "<option value=" . $Data->getId() . " style='background-color: #4843a3;' selected>" . $Data->getUserName() . "</option>";

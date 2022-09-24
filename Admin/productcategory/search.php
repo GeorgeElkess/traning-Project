@@ -3,7 +3,6 @@ include_once "../../includes.php";
 extract($_GET);
 $AllData = ProductCategoryManger::GetAll(new ProductCategory($Id,$Name));
 if($AllData!=false){
-    $AllData = ProductCategoryManger::GetAll();
     foreach ($AllData as $Data) {
         echo "<tr>";
         echo "<td>" . $Data->getId() . "</td>";

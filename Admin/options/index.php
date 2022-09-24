@@ -79,11 +79,11 @@ if (isset($_GET["Id"])) $Id = intval(Encryption::Decrypt($_GET["Id"]));
         </td>
         <td width=65%>
             <h2>
-                <a href="Add.php"> Add Option</a>
+                <a href="Add.php"> Add Extra Value</a>
             </h2>
             <center>
                 <h1>
-                    Options
+                    Extra Value
                 </h1>
             </center>
             <div class="table-wrapper">

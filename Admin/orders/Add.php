@@ -29,7 +29,7 @@ if (!isset($_SESSION["UserId"])) {
                             <select class="contactus" name="UserId" id="UserId" aria-placeholder="User">
                                 <option value="0" style="background-color: #4843a3;">Non</option>
                                 <?php
-                                $AllData = UserManger::GetAll();
+                                $AllData = UserManger::GetAll(new User(null,2));
                                 foreach ($AllData as $Data) {
                                     echo "<option value=" . $Data->getId() . " style='background-color: #4843a3;'>" . $Data->getUserName() . "</option>";
                                 }

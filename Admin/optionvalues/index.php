@@ -76,24 +76,51 @@ function getName(ProductCategoryOption $Data)
                                     </div>
                                 </div>
                                 <script>
-                                    document.getElementById("PCOId").onchange = function() {
+                                    document.getElementById("PCOId").onchange = kk;
+                                    window.onload = kk;
+
+                                    function kk() {
                                         This = document.getElementById("PCOId");
                                         PCOId = This.options[This.selectedIndex].value;
                                         check = [];
+                                        v = [];
                                         <?php
                                         $i = 0;
                                         $AllData = ProductCategoryOptionManger::GetAll();
                                         foreach ($AllData as $Data) {
                                             $Option = OptionsManger::GetById($Data->getOptionId());
                                             $Type = $Option->getType();
-                                            echo "check[$i]={PCOId: " . $Data->getId() . ", Type:'" . $Type . "'};";
+                                            echo "check[$i]={PCOId: " . $Data->getId() . ", Type:'" . $Type . "', Category: " . $Data->getCategoryId() . "};";
+                                            $i++;
+                                        }
+                                        $i = 0;
+                                        $AllData = ProductManger::GetAll();
+                                        foreach ($AllData as $Data) {
+                                            echo "v[$i]={ProductId:" . $Data->getId() . ", ProductName:'" . $Data->getName() . "', Category: " . $Data->getCategoryId() . "};";
                                             $i++;
                                         }
                                         ?>
                                         for (let i = 0; i < check.length; i++) {
                                             const element = check[i];
                                             if (element.PCOId == PCOId) {
-                                                document.getElementById("Values").type = element.Type;
+                                                document.getElementById("value").type = element.Type;
+                                                select = document.getElementById("ProductId");
+                                                select.innerHTML = "";
+                                                child = document.createElement("option");
+                                                child.value = 0;
+                                                child.style = "background-color: #4843a3;";
+                                                child.innerHTML = "Non";
+                                                select.appendChild(child);
+                                                for (let j = 0; j < v.length; j++) {
+                                                    const x = v[j];
+                                                    if (x.Category == element.Category) {
+                                                        child = document.createElement("option");
+                                                        child.value = x.ProductId;
+                                                        child.style = "background-color: #4843a3;";
+                                                        child.innerHTML = x.ProductName;
+                                                        select.appendChild(child);
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -131,11 +158,11 @@ function getName(ProductCategoryOption $Data)
         </td>
         <td width=65%>
             <h2>
-                <a href="Add.php"> Add Extra Value</a>
+                <a href="Add.php"> Add Product Extra Value</a>
             </h2>
             <center>
                 <h1>
-                    Extra Values
+                    Product Extra Value
                 </h1>
             </center>
             <div class="table-wrapper">

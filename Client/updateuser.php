@@ -58,8 +58,7 @@ if($_POST["Address"]!=$Address->arry_object[0])
     $update_obj->updata("user",$_POST["Address"],"Address","Id",$user_id);
 }
 echo  '<script>'.
-         'history.go(-1);'
-         
+         'location.replace("index.php");'
          .'</script>';
 ?>
                         
